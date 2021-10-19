@@ -98,30 +98,26 @@ namespace ArStart.iOS.Renderers
 
         private void PlaceModel(SCNVector3 pos)
         {
-            var asset = $"Assets.scnassets/bottle.obj";
-            var texture = $"Assets.scnasset/andy.png";
-            var model = CreateModelFromFile(asset, texture, "bottle", pos);
-            if (model == null) return;
-            _sceneView.Scene.RootNode.AddChildNode(model);
+            var asset = $"Assets.scnassets/bottle.dae";
+
+            var modelNode = CreateModelFromFile(asset, pos);
+            if (modelNode == null) return;
+                _sceneView.Scene.RootNode.AddChildNode(modelNode);
         }
 
-        private SCNNode CreateModelFromFile(string modelName, string textureName, string nodeName, SCNVector3 vector)
+        private SCNNode CreateModelFromFile(string asset, SCNVector3 vector)
         {
             try
             {
-                var mat = new SCNMaterial();
-                mat.Diffuse.Contents = UIImage.FromFile(textureName);
-                mat.LocksAmbientWithDiffuse = true;
+                var scene = SCNScene.FromFile(asset);
+                var modelNodes = scene.RootNode.ChildNodes;
 
-                var scene = SCNScene.FromFile(modelName);
-                var geometry = scene.RootNode.ChildNodes[0].Geometry;
                 var modelNode = new SCNNode
                 {
                     Position = vector,
-                    Geometry = geometry,
-                    Scale = new SCNVector3(1.0f, 1.0f, 1.0f)
+                    Scale = new SCNVector3(0.5f, 0.5f, 0.5f)
                 };
-                modelNode.Geometry.Materials = new[] { mat };
+                modelNode.AddNodes(modelNodes);
                 return modelNode;
             }
             catch (Exception ex)

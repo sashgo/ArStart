@@ -24,7 +24,7 @@ namespace ArStart.iOS.Delegates
             var material = new SCNMaterial();
             material.Diffuse.Contents = UIImage.FromFile("Assets.scnassets/grid.png");
             plane.Materials = new[] { material };
-            plane.FirstMaterial.Transparency = 0.1f;
+            plane.FirstMaterial.Transparency = 0.3f;
 
             var planeNode = SCNNode.FromGeometry(plane);
             planeNode.Position = new SCNVector3(anchor.Center.X, 0.0f, anchor.Center.Z);
