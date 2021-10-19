@@ -1,10 +1,12 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.Views;
 using ArStart.Droid.Renderers;
 using ArStart.Views;
 using Google.AR.Sceneform;
+using Google.AR.Sceneform.Assets;
 using Google.AR.Sceneform.Rendering;
 using Google.AR.Sceneform.UX;
 using Java.Util.Functions;
@@ -20,8 +22,7 @@ namespace ArStart.Droid.Renderers
         private ArFragment _arFragment;
         private Renderable _renderable;
 
-        private static string Asset =
-   "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf";
+        private static string Asset = "bottle.gltf";
 
         public ArPageRenderer(Context context) : base(context)
         {
@@ -33,27 +34,21 @@ namespace ArStart.Droid.Renderers
 
             var activity = this.Context as Activity;
 
-            //this.viewModel = this.Element.BindingContext as ARViewModel;
-
             _view = activity.LayoutInflater.Inflate(Resource.Layout.ARLayout, this, false);
             AddView(_view);
 
             _arFragment = activity.GetFragmentManager().FindFragmentById(Resource.Id.ar_fragment) as ArFragment;
             if (_arFragment != null)
-            {
-                //var a = Google.AR.Sceneform.Assets.RenderableSource.InvokeBuilder()
-                //    .SetSource(Context, Android.Net.Uri.Parse(Asset), Google.AR.Sceneform.Assets.RenderableSource.SourceType.Glb)
-                //    .Build();
+            {                
+                RenderableSource model = RenderableSource.InvokeBuilder()
+                .SetSource(Context, Android.Net.Uri.Parse(Asset), RenderableSource.SourceType.Gltf2)
+                .Build();
 
-                ModelRenderable.InvokeBuilder().SetSource(Context, Resource.Raw.andy).Build()
+                ModelRenderable.InvokeBuilder().SetSource(Context, model).Build()
                     .ThenAccept(this);
 
-                //ModelRenderable.InvokeBuilder()
-                //    .SetSource(Context, Android.Net.Uri.Parse("bottle.glb"))
-                //    .Build()
+                //ViewRenderable.InvokeBuilder().SetView(Context, Resource.Layout.WineView).Build()
                 //    .ThenAccept(this);
-
-
 
                 _arFragment.TapArPlane += OnTapArPlane;
             }
@@ -92,11 +87,11 @@ namespace ArStart.Droid.Renderers
             anchorNode.SetParent(_arFragment.ArSceneView.Scene);
 
             // Create the transformable andy and add it to the anchor.
-            var andy = new TransformableNode(_arFragment.TransformationSystem);
-            andy.SetParent(anchorNode);
-            andy.Renderable = _renderable;
+            var node = new TransformableNode(_arFragment.TransformationSystem);
+            node.SetParent(anchorNode);
+            node.Renderable = _renderable;
 
-            andy.Select();
+            node.Select();
         }
 
         public void Accept(Java.Lang.Object t)

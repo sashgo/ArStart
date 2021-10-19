@@ -149,9 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <SceneKitAsset Include="Assets.scnassets\grid.png" />
-    <SceneKitAsset Include="Assets.scnassets\andy.png" />
-    <SceneKitAsset Include="Assets.scnassets\andy.obj" />
-    <SceneKitAsset Include="Assets.scnassets\andy.mtl" />
     <SceneKitAsset Include="Assets.scnassets\bottle.obj" />
     <SceneKitAsset Include="Assets.scnassets\bottle.mtl" />
   </ItemGroup>
